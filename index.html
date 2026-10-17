@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Ôn Tập Công Thức Lượng Giác 11 - Nhóm 2 (Nối Cột)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- MathJax 3 CDN -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' },
+      startup: { typeset: false }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+
+  <style>
+    .touch-none-select {
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .node-selected {
+      outline: 3px solid #d97706;
+      background-color: #fef3c7 !important;
+    }
+    .node-matched {
+      background-color: #ecfdf5 !important;
+      border-color: #10b981 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+  <!-- MÀN HÌNH 1: BẮT ĐẦU VÀ NHẬP THÔNG TIN -->
+  <section id="screen-welcome" class="flex-1 flex items-center justify-center p-4">
+    <div class="max-w-xl w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8 space-y-6">
+      <div class="text-center space-y-2 border-b border-slate-100 pb-5">
+        <span class="text-xs font-bold tracking-wider text-amber-600 uppercase bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+          Toán 11 • Sách Kết nối tri thức với cuộc sống
+        </span>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800">NHÓM 2 – GHÉP NỐI CÔNG THỨC LƯỢNG GIÁC</h1>
+        <p class="text-sm text-slate-500 font-medium">Bài tập cuối Chương I – Toán 11</p>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 leading-relaxed">
+        <strong>Hướng dẫn thao tác nối cột:</strong>
+        <br>• <em>Cách 1 (Kéo dây):</em> Nhấn giữ điểm tròn bên cột trái và kéo sang điểm tròn tương ứng bên cột phải.
+        <br>• <em>Cách 2 (Chạm 2 bước):</em> Chạm vào một ô ở vế trái (ô sẽ sáng viền), sau đó chạm vào ô vế phải thích hợp để tạo đường nối.
+        <br>• Chạm vào đường nối hoặc bấm nút <b>Hủy nối</b> để thay đổi lựa chọn.
+      </div>
+
+      <form id="group-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tên nhóm <span class="text-rose-500">*</span></label>
+          <input type="text" id="input-group-name" value="Nhóm 2" required
+                 class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Lớp <span class="text-rose-500">*</span></label>
+          <input type="text" id="input-class-name" placeholder="Ví dụ: 11A1" required
+                 class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Danh sách thành viên (Tùy chọn)</label>
+          <textarea id="input-members" rows="2" placeholder="Nguyễn Văn A, Trần Thị B..."
+                    class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.98]">
+          BẮT ĐẦU HOẠT ĐỘNG
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- MÀN HÌNH 2: KHÔNG GIAN NỐI CỘT 5 PHẦN -->
+  <section id="screen-exercise" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
+    <!-- Header Thông tin & Thanh điều hướng 5 phần -->
+    <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-sm">
+      <div class="flex items-center gap-2">
+        <span id="badge-group" class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-amber-200">Nhóm 2</span>
+        <span id="badge-class" class="text-xs text-slate-500 font-semibold">11A1</span>
+      </div>
+
+      <!-- 5 Tab điều hướng: A -> E -->
+      <nav class="flex items-center gap-1.5 overflow-x-auto py-1">
+        <button data-sec="sec_A" class="nav-tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg border border-amber-200 bg-amber-50 text-amber-800 transition">
+          A. Công thức cộng
+        </button>
+        <button data-sec="sec_B" class="nav-tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-rose-50 hover:text-rose-700 transition">
+          B. Nhân đôi
+        </button>
+        <button data-sec="sec_C" class="nav-tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition">
+          C. Hạ bậc
+        </button>
+        <button data-sec="sec_D" class="nav-tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition">
+          D. Tích → Tổng
+        </button>
+        <button data-sec="sec_E" class="nav-tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-purple-50 hover:text-purple-700 transition">
+          E. Tổng → Tích
+        </button>
+      </nav>
+
+      <!-- Tiến độ & Nộp bài -->
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <div class="text-[11px] text-slate-400 font-medium">Tiến độ nối</div>
+          <div id="progress-indicator" class="text-sm font-extrabold text-amber-600">0/22</div>
+        </div>
+        <button id="btn-submit-work" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition active:scale-95 disabled:bg-slate-300 disabled:cursor-not-allowed">
+          NỘP KẾT QUẢ
+        </button>
+      </div>
+    </header>
+
+    <!-- Khu vực nối cột chính -->
+    <main class="flex-1 bg-white rounded-2xl border border-slate-200 m-3 flex flex-col overflow-hidden shadow-sm">
+      <div id="section-header-banner" class="px-4 py-2.5 bg-amber-50 border-b border-amber-200 flex items-center justify-between shrink-0">
+        <h2 id="current-section-title" class="text-sm font-bold text-amber-900">A. CÔNG THỨC CỘNG</h2>
+        <span id="current-section-note" class="text-xs text-amber-800 bg-white/80 px-2 py-0.5 rounded border border-amber-200"></span>
+      </div>
+
+      <!-- Khung chứa 2 cột và lớp vẽ SVG nối dây -->
+      <div id="matching-stage-container" class="flex-1 relative overflow-y-auto p-4 md:p-6">
+        <!-- SVG Canvas vẽ dây nối -->
+        <svg id="svg-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"></svg>
+
+        <div class="flex justify-between items-start gap-8 md:gap-24 relative z-20 max-w-4xl mx-auto">
+          <!-- CỘT TRÁI (VẾ TRÁI) -->
+          <div id="col-left" class="w-1/2 space-y-4"></div>
+
+          <!-- CỘT PHẢI (VẾ PHẢI ĐÃ XÁO TRỘN) -->
+          <div id="col-right" class="w-1/2 space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- Footer điều hướng từng phần -->
+      <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <button id="btn-reset-current-sec" class="text-xs text-rose-600 hover:underline font-semibold">
+          Xóa các đường nối phần này
+        </button>
+        <button id="btn-next-sec" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg shadow transition">
+          Phần tiếp theo →
+        </button>
+      </div>
+    </main>
+  </section>
+
+  <!-- MÀN HÌNH 3: THÔNG BÁO NỘP THÀNH CÔNG -->
+  <section id="screen-success" class="hidden flex-1 flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-200 p-8 text-center space-y-4">
+      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-black">
+        ✓
+      </div>
+      <h2 class="text-xl font-extrabold text-slate-800">ĐÃ GỬI KẾT QUẢ THÀNH CÔNG</h2>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Kết quả ghép nối công thức của nhóm đã được ghi nhận. Giáo viên sẽ tiến hành nhận xét và chữa bài trực tiếp trên lớp.
+      </p>
+      <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-left text-xs text-slate-600 space-y-1">
+        <div><strong>Mã bài nộp:</strong> <span id="label-sub-id" class="font-mono text-slate-800 font-bold"></span></div>
+        <div><strong>Nhóm:</strong> <span id="label-group-info" class="text-slate-800 font-semibold"></span></div>
+        <div><strong>Số công thức hoàn thành:</strong> <span class="font-bold text-emerald-600">22/22</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL XÁC NHẬN NỘP BÀI -->
+  <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-slate-100">
+      <h4 class="text-base font-bold text-slate-800">Xác Nhận Nộp Bài</h4>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Nhóm đã ghép nối đầy đủ 22/22 công thức. Các em có chắc chắn muốn nộp kết quả để giáo viên kiểm tra không?
+      </p>
+      <div class="flex gap-2 justify-end pt-2">
+        <button id="btn-cancel-modal" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">
+          Quay lại kiểm tra
+        </button>
+        <button id="btn-confirm-submit" class="px-4 py-2 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white rounded-lg shadow transition">
+          Xác nhận nộp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC NỐI CỘT BẰNG SVG & POINTER -->
+  <script>
+    // 1. DATA KHAI BÁO TOÁN HỌC 22 CÔNG THỨC NHÓM 2
+    const GROUP2_DATA = {
+      meta: { questionSet: "TRIG_G2", version: "1.0", totalQuestions: 22 },
+      sections: [
+        {
+          id: "sec_A",
+          title: "A. CÔNG THỨC CỘNG",
+          note: "Lưu ý quy tắc dấu của sin, cos và tan",
+          questions: [
+            { id: "A1", leftText: "\\sin(a + b)", correctVal: "\\sin a\\cos b + \\cos a\\sin b" },
+            { id: "A2", leftText: "\\sin(a - b)", correctVal: "\\sin a\\cos b - \\cos a\\sin b" },
+            { id: "A3", leftText: "\\cos(a + b)", correctVal: "\\cos a\\cos b - \\sin a\\sin b" },
+            { id: "A4", leftText: "\\cos(a - b)", correctVal: "\\cos a\\cos b + \\sin a\\sin b" },
+            { id: "A5", leftText: "\\tan(a + b)", correctVal: "\\dfrac{\\tan a + \\tan b}{1 - \\tan a\\tan b}" },
+            { id: "A6", leftText: "\\tan(a - b)", correctVal: "\\dfrac{\\tan a - \\tan b}{1 + \\tan a\\tan b}" }
+          ],
+          cards: [
+            { id: "C_A1", latex: "\\sin a\\cos b + \\cos a\\sin b", val: "\\sin a\\cos b + \\cos a\\sin b" },
+            { id: "C_A2", latex: "\\sin a\\cos b - \\cos a\\sin b", val: "\\sin a\\cos b - \\cos a\\sin b" },
+            { id: "C_A3", latex: "\\cos a\\cos b - \\sin a\\sin b", val: "\\cos a\\cos b - \\sin a\\sin b" },
+            { id: "C_A4", latex: "\\cos a\\cos b + \\sin a\\sin b", val: "\\cos a\\cos b + \\sin a\\sin b" },
+            { id: "C_A5", latex: "\\dfrac{\\tan a + \\tan b}{1 - \\tan a\\tan b}", val: "\\dfrac{\\tan a + \\tan b}{1 - \\tan a\\tan b}" },
+            { id: "C_A6", latex: "\\dfrac{\\tan a - \\tan b}{1 + \\tan a\\tan b}", val: "\\dfrac{\\tan a - \\tan b}{1 + \\tan a\\tan b}" }
+          ]
+        },
+        {
+          id: "sec_B",
+          title: "B. CÔNG THỨC NHÂN ĐÔI",
+          note: "B1, B2, B3 là ba dạng biểu diễn khác nhau của \\cos 2a",
+          questions: [
+            { id: "B1", subLabel: "Dạng hiệu hai bình phương", leftText: "\\cos 2a", correctVal: "\\cos^2 a - \\sin^2 a" },
+            { id: "B2", subLabel: "Dạng theo \\cos^2 a", leftText: "\\cos 2a", correctVal: "2\\cos^2 a - 1" },
+            { id: "B3", subLabel: "Dạng theo \\sin^2 a", leftText: "\\cos 2a", correctVal: "1 - 2\\sin^2 a" },
+            { id: "B4", subLabel: "Nhân đôi của hàm sin", leftText: "\\sin 2a", correctVal: "2\\sin a\\cos a" },
+            { id: "B5", subLabel: "Nhân đôi của hàm tan", leftText: "\\tan 2a", correctVal: "\\dfrac{2\\tan a}{1 - \\tan^2 a}" }
+          ],
+          cards: [
+            { id: "C_B1", latex: "\\cos^2 a - \\sin^2 a", val: "\\cos^2 a - \\sin^2 a" },
+            { id: "C_B2", latex: "2\\cos^2 a - 1", val: "2\\cos^2 a - 1" },
+            { id: "C_B3", latex: "1 - 2\\sin^2 a", val: "1 - 2\\sin^2 a" },
+            { id: "C_B4", latex: "2\\sin a\\cos a", val: "2\\sin a\\cos a" },
+            { id: "C_B5", latex: "\\dfrac{2\\tan a}{1 - \\tan^2 a}", val: "\\dfrac{2\\tan a}{1 - \\tan^2 a}" }
+          ]
+        },
+        {
+          id: "sec_C",
+          title: "C. CÔNG THỨC HẠ BẬC",
+          note: "Chú ý phân biệt dấu ở tử số giữa \\sin^2 a và \\cos^2 a",
+          questions: [
+            { id: "C1", leftText: "\\sin^2 a", correctVal: "\\dfrac{1 - \\cos 2a}{2}" },
+            { id: "C2", leftText: "\\cos^2 a", correctVal: "\\dfrac{1 + \\cos 2a}{2}" },
+            { id: "C3", leftText: "\\sin a\\cos a", correctVal: "\\dfrac{\\sin 2a}{2}" }
+          ],
+          cards: [
+            { id: "C_C1", latex: "\\dfrac{1 - \\cos 2a}{2}", val: "\\dfrac{1 - \\cos 2a}{2}" },
+            { id: "C_C2", latex: "\\dfrac{1 + \\cos 2a}{2}", val: "\\dfrac{1 + \\cos 2a}{2}" },
+            { id: "C_C3", latex: "\\dfrac{\\sin 2a}{2}", val: "\\dfrac{\\sin 2a}{2}" }
+          ]
+        },
+        {
+          id: "sec_D",
+          title: "D. BIẾN ĐỔI TÍCH THÀNH TỔNG",
+          note: "Quan sát cẩn thận dấu và thứ tự góc của \\sin a\\cos b so với \\cos a\\sin b",
+          questions: [
+            { id: "D1", leftText: "\\sin a\\sin b", correctVal: "\\dfrac{1}{2}[\\cos(a - b) - \\cos(a + b)]" },
+            { id: "D2", leftText: "\\cos a\\cos b", correctVal: "\\dfrac{1}{2}[\\cos(a - b) + \\cos(a + b)]" },
+            { id: "D3", leftText: "\\sin a\\cos b", correctVal: "\\dfrac{1}{2}[\\sin(a + b) + \\sin(a - b)]" },
+            { id: "D4", leftText: "\\cos a\\sin b", correctVal: "\\dfrac{1}{2}[\\sin(a + b) - \\sin(a - b)]" }
+          ],
+          cards: [
+            { id: "C_D1", latex: "\\dfrac{1}{2}[\\cos(a - b) - \\cos(a + b)]", val: "\\dfrac{1}{2}[\\cos(a - b) - \\cos(a + b)]" },
+            { id: "C_D2", latex: "\\dfrac{1}{2}[\\cos(a - b) + \\cos(a + b)]", val: "\\dfrac{1}{2}[\\cos(a - b) + \\cos(a + b)]" },
+            { id: "C_D3", latex: "\\dfrac{1}{2}[\\sin(a + b) + \\sin(a - b)]", val: "\\dfrac{1}{2}[\\sin(a + b) + \\sin(a - b)]" },
+            { id: "C_D4", latex: "\\dfrac{1}{2}[\\sin(a + b) - \\sin(a - b)]", val: "\\dfrac{1}{2}[\\sin(a + b) - \\sin(a - b)]" }
+          ]
+        },
+        {
+          id: "sec_E",
+          title: "E. BIẾN ĐỔI TỔNG THÀNH TÍCH",
+          note: "Lưu ý dấu âm phía trước hệ số 2 của công thức \\cos a - \\cos b",
+          questions: [
+            { id: "E1", leftText: "\\cos a + \\cos b", correctVal: "2\\cos\\dfrac{a + b}{2}\\cos\\dfrac{a - b}{2}" },
+            { id: "E2", leftText: "\\cos a - \\cos b", correctVal: "-2\\sin\\dfrac{a + b}{2}\\sin\\dfrac{a - b}{2}" },
+            { id: "E3", leftText: "\\sin a + \\sin b", correctVal: "2\\sin\\dfrac{a + b}{2}\\cos\\dfrac{a - b}{2}" },
+            { id: "E4", leftText: "\\sin a - \\sin b", correctVal: "2\\cos\\dfrac{a + b}{2}\\sin\\dfrac{a - b}{2}" }
+          ],
+          cards: [
+            { id: "C_E1", latex: "2\\cos\\dfrac{a + b}{2}\\cos\\dfrac{a - b}{2}", val: "2\\cos\\dfrac{a + b}{2}\\cos\\dfrac{a - b}{2}" },
+            { id: "C_E2", latex: "-2\\sin\\dfrac{a + b}{2}\\sin\\dfrac{a - b}{2}", val: "-2\\sin\\dfrac{a + b}{2}\\sin\\dfrac{a - b}{2}" },
+            { id: "C_E3", latex: "2\\sin\\dfrac{a + b}{2}\\cos\\dfrac{a - b}{2}", val: "2\\sin\\dfrac{a + b}{2}\\cos\\dfrac{a - b}{2}" },
+            { id: "C_E4", latex: "2\\cos\\dfrac{a + b}{2}\\sin\\dfrac{a - b}{2}", val: "2\\cos\\dfrac{a + b}{2}\\sin\\dfrac{a - b}{2}" }
+          ]
+        }
+      ]
+    };
+
+    // 2. STATE QUẢN LÝ
+    let state = {
+      groupInfo: { name: "", className: "", members: "" },
+      currentSecId: "sec_A",
+      mappings: {}, // { [questionId]: cardId }
+      shuffledCards: {},
+      selectedLeftQId: null,
+      selectedRightCardId: null,
+      submissionId: "SUB_G2_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7)
+    };
+
+    let dragLineState = null; // { fromQId, startX, startY, currentX, currentY }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function initShuffledCards() {
+      GROUP2_DATA.sections.forEach(sec => {
+        state.shuffledCards[sec.id] = shuffleArray(sec.cards);
+      });
+    }
+
+    function saveLocal() {
+      localStorage.setItem("MATH11_G2_MATCH_STATE", JSON.stringify(state));
+    }
+
+    function loadLocal() {
+      const data = localStorage.getItem("MATH11_G2_MATCH_STATE");
+      if (data) {
+        try {
+          const parsed = JSON.parse(data);
+          state = { ...state, ...parsed };
+          return true;
+        } catch (e) { console.error(e); }
+      }
+      return false;
+    }
+
+    function renderMath(container) {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise(container ? [container] : []).then(() => {
+          redrawSvgLines();
+        }).catch(err => console.log(err));
+      } else {
+        redrawSvgLines();
+      }
+    }
+
+    function findCardById(cardId) {
+      for (const sec of GROUP2_DATA.sections) {
+        const found = sec.cards.find(c => c.id === cardId);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    // 3. RENDER GIAO DIỆN HAI CỘT
+    function renderCurrentSection() {
+      const sec = GROUP2_DATA.sections.find(s => s.id === state.currentSecId);
+      if (!sec) return;
+
+      document.getElementById("current-section-title").textContent = sec.title;
+      document.getElementById("current-section-note").innerHTML = sec.note ? `$${sec.note}$` : "";
+
+      document.querySelectorAll(".nav-tab-btn").forEach(btn => {
+        const isCur = btn.getAttribute("data-sec") === sec.id;
+        btn.className = `nav-tab-btn px-2.5 py-1.5 text-xs font-bold rounded-lg border transition ${
+          isCur ? "bg-amber-600 text-white border-amber-700 shadow-sm" : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"
+        }`;
+      });
+
+      const colLeft = document.getElementById("col-left");
+      const colRight = document.getElementById("col-right");
+      colLeft.innerHTML = "";
+      colRight.innerHTML = "";
+
+      // Render Cột Trái (Questions)
+      sec.questions.forEach(q => {
+        const isMatched = !!state.mappings[q.id];
+        const isSelected = state.selectedLeftQId === q.id;
+
+        const box = document.createElement("div");
+        box.id = `node-left-${q.id}`;
+        box.className = `p-3.5 bg-white border-2 rounded-xl shadow-xs relative flex items-center justify-between cursor-pointer transition-all ${
+          isMatched ? "node-matched border-emerald-500" : (isSelected ? "node-selected border-amber-500" : "border-slate-200 hover:border-amber-300")
+        }`;
+
+        let labelHtml = q.subLabel ? `<div class="text-[10px] font-bold text-amber-700 uppercase mb-1">${q.subLabel}</div>` : '';
+        box.innerHTML = `
+          <div class="pr-3">
+            ${labelHtml}
+            <div class="text-sm md:text-base font-bold text-slate-800">$${q.leftText}$</div>
+          </div>
+          <div class="flex items-center gap-2">
+            ${isMatched ? `<button title="Hủy nối" class="btn-unlink-q text-slate-400 hover:text-rose-500 text-xs px-1 font-bold" data-qid="${q.id}">✕</button>` : ''}
+            <div id="dot-left-${q.id}" class="touch-none-select w-4 h-4 rounded-full border-2 border-white shadow-xs ${isMatched ? 'bg-emerald-500' : 'bg-amber-500'} cursor-crosshair shrink-0"></div>
+          </div>
+        `;
+
+        box.addEventListener("click", (e) => {
+          if (e.target.closest(".btn-unlink-q")) return;
+          handleLeftNodeClick(q.id);
+        });
+
+        // Thiết lập sự kiện kéo dây từ điểm chốt tròn bên trái
+        const dot = box.querySelector(`#dot-left-${q.id}`);
+        setupPointerDragLine(dot, q.id);
+
+        colLeft.appendChild(box);
+      });
+
+      // Render Cột Phải (Cards)
+      const rightCards = state.shuffledCards[sec.id] || [];
+      rightCards.forEach(c => {
+        // Kiểm tra xem thẻ này đã được nối với câu hỏi nào chưa
+        const matchedQId = Object.keys(state.mappings).find(qid => state.mappings[qid] === c.id);
+        const isMatched = !!matchedQId;
+        const isSelected = state.selectedRightCardId === c.id;
+
+        const box = document.createElement("div");
+        box.id = `node-right-${c.id}`;
+        box.className = `p-3.5 bg-white border-2 rounded-xl shadow-xs relative flex items-center justify-between cursor-pointer transition-all ${
+          isMatched ? "node-matched border-emerald-500" : (isSelected ? "node-selected border-amber-500" : "border-slate-200 hover:border-amber-300")
+        }`;
+
+        box.innerHTML = `
+          <div id="dot-right-${c.id}" class="w-4 h-4 rounded-full border-2 border-white shadow-xs ${isMatched ? 'bg-emerald-500' : 'bg-slate-400'} shrink-0"></div>
+          <div class="pl-3 flex-1 text-center font-medium text-sm md:text-base text-slate-800">$${c.latex}$</div>
+        `;
+
+        box.addEventListener("click", () => {
+          handleRightNodeClick(c.id);
+        });
+
+        colRight.appendChild(box);
+      });
+
+      // Nút hủy nối câu hỏi
+      document.querySelectorAll(".btn-unlink-q").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const qid = btn.getAttribute("data-qid");
+          delete state.mappings[qid];
+          saveLocal();
+          renderCurrentSection();
+        });
+      });
+
+      updateProgress();
+      renderMath(document.getElementById("matching-stage-container"));
+    }
+
+    // 4. XỬ LÝ CHẠM 2 BƯỚC (TAP-TO-MATCH)
+    function handleLeftNodeClick(qId) {
+      if (state.selectedLeftQId === qId) {
+        state.selectedLeftQId = null;
+      } else {
+        state.selectedLeftQId = qId;
+        // Nếu đã có cột phải đang chọn trước đó -> tạo cặp nối ngay
+        if (state.selectedRightCardId) {
+          makeConnection(state.selectedLeftQId, state.selectedRightCardId);
+          state.selectedLeftQId = null;
+          state.selectedRightCardId = null;
+        }
+      }
+      renderCurrentSection();
+    }
+
+    function handleRightNodeClick(cardId) {
+      if (state.selectedLeftQId) {
+        makeConnection(state.selectedLeftQId, cardId);
+        state.selectedLeftQId = null;
+        state.selectedRightCardId = null;
+        renderCurrentSection();
+      } else {
+        state.selectedRightCardId = (state.selectedRightCardId === cardId) ? null : cardId;
+        renderCurrentSection();
+      }
+    }
+
+    function makeConnection(qId, cardId) {
+      // Nếu thẻ này đang nối với câu hỏi khác, tháo kết nối cũ
+      Object.keys(state.mappings).forEach(qid => {
+        if (state.mappings[qid] === cardId) {
+          delete state.mappings[qid];
+        }
+      });
+      state.mappings[qId] = cardId;
+      saveLocal();
+    }
+
+    // 5. KÉO DÂY BẰNG POINTER EVENTS TRỰC TIẾP TRÊN MÀN HÌNH
+    function setupPointerDragLine(dotEl, qId) {
+      dotEl.addEventListener("pointerdown", (e) => {
+        e.stopPropagation();
+        const stage = document.getElementById("matching-stage-container");
+        const stageRect = stage.getBoundingClientRect();
+
+        const dotRect = dotEl.getBoundingClientRect();
+        const startX = dotRect.left + dotRect.width / 2 - stageRect.left + stage.scrollLeft;
+        const startY = dotRect.top + dotRect.height / 2 - stageRect.top + stage.scrollTop;
+
+        dragLineState = {
+          fromQId: qId,
+          startX: startX,
+          startY: startY,
+          currentX: startX,
+          currentY: startY
+        };
+
+        dotEl.setPointerCapture(e.pointerId);
+
+        function onPointerMove(ev) {
+          if (!dragLineState) return;
+          const curStageRect = stage.getBoundingClientRect();
+          dragLineState.currentX = ev.clientX - curStageRect.left + stage.scrollLeft;
+          dragLineState.currentY = ev.clientY - curStageRect.top + stage.scrollTop;
+          redrawSvgLines();
+        }
+
+        function onPointerUp(ev) {
+          if (!dragLineState) return;
+          try { dotEl.releasePointerCapture(ev.pointerId); } catch(err){}
+
+          // Tìm xem điểm thả có trúng ô nào ở cột phải không
+          const elementsUnder = document.elementsFromPoint(ev.clientX, ev.clientY);
+          const rightBox = elementsUnder.find(el => el.id && el.id.startsWith("node-right-"));
+
+          if (rightBox) {
+            const cardId = rightBox.id.replace("node-right-", "");
+            makeConnection(dragLineState.fromQId, cardId);
+          }
+
+          dragLineState = null;
+          window.removeEventListener("pointermove", onPointerMove);
+          window.removeEventListener("pointerup", onPointerUp);
+          window.removeEventListener("pointercancel", onPointerUp);
+
+          renderCurrentSection();
+        }
+
+        window.addEventListener("pointermove", onPointerMove);
+        window.addEventListener("pointerup", onPointerUp);
+        window.addEventListener("pointercancel", onPointerUp);
+      });
+    }
+
+    // 6. VẼ ĐƯỜNG NỐI SVG (BEZIER CURVE CỰC MƯỢT)
+    function redrawSvgLines() {
+      const svg = document.getElementById("svg-canvas");
+      const stage = document.getElementById("matching-stage-container");
+      if (!svg || !stage) return;
+
+      const stageRect = stage.getBoundingClientRect();
+      svg.setAttribute("width", stage.scrollWidth);
+      svg.setAttribute("height", stage.scrollHeight);
+      svg.innerHTML = "";
+
+      const sec = GROUP2_DATA.sections.find(s => s.id === state.currentSecId);
+      if (!sec) return;
+
+      // Vẽ các đường nối đã hoàn thành
+      sec.questions.forEach(q => {
+        const cardId = state.mappings[q.id];
+        if (!cardId) return;
+
+        const leftDot = document.getElementById(`dot-left-${q.id}`);
+        const rightDot = document.getElementById(`dot-right-${cardId}`);
+        if (!leftDot || !rightDot) return;
+
+        const lRect = leftDot.getBoundingClientRect();
+        const rRect = rightDot.getBoundingClientRect();
+
+        const x1 = lRect.left + lRect.width / 2 - stageRect.left + stage.scrollLeft;
+        const y1 = lRect.top + lRect.height / 2 - stageRect.top + stage.scrollTop;
+        const x2 = rRect.left + rRect.width / 2 - stageRect.left + stage.scrollLeft;
+        const y2 = rRect.top + rRect.height / 2 - stageRect.top + stage.scrollTop;
+
+        const dx = Math.abs(x2 - x1) * 0.5;
+        const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        // Đường nối chính
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", dStr);
+        path.setAttribute("stroke", "#10b981"); // Màu xanh lá nổi bật khi đã nối
+        path.setAttribute("stroke-width", "3");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke-linecap", "round");
+        path.style.cursor = "pointer";
+        path.style.pointerEvents = "auto";
+        path.setAttribute("title", "Bấm vào đường dây để hủy nối");
+
+        path.addEventListener("click", () => {
+          delete state.mappings[q.id];
+          saveLocal();
+          renderCurrentSection();
+        });
+
+        svg.appendChild(path);
+      });
+
+      // Vẽ đường dây đang kéo chuột trực tiếp
+      if (dragLineState) {
+        const x1 = dragLineState.startX;
+        const y1 = dragLineState.startY;
+        const x2 = dragLineState.currentX;
+        const y2 = dragLineState.currentY;
+
+        const dx = Math.abs(x2 - x1) * 0.5;
+        const dStr = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+
+        const dragPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        dragPath.setAttribute("d", dStr);
+        dragPath.setAttribute("stroke", "#f59e0b"); // Màu vàng cam đang kéo
+        dragPath.setAttribute("stroke-width", "3.5");
+        dragPath.setAttribute("stroke-dasharray", "6 4");
+        dragPath.setAttribute("fill", "none");
+        dragPath.setAttribute("stroke-linecap", "round");
+
+        svg.appendChild(dragPath);
+      }
+    }
+
+    // Tự động vẽ lại đường khi cuộn trang hoặc resize cửa sổ
+    document.getElementById("matching-stage-container").addEventListener("scroll", redrawSvgLines);
+    window.addEventListener("resize", redrawSvgLines);
+
+    function updateProgress() {
+      const count = Object.keys(state.mappings).length;
+      document.getElementById("progress-indicator").textContent = `${count}/${GROUP2_DATA.meta.totalQuestions}`;
+
+      const submitBtn = document.getElementById("btn-submit-work");
+      submitBtn.disabled = (count < GROUP2_DATA.meta.totalQuestions);
+      if (count < GROUP2_DATA.meta.totalQuestions) {
+        submitBtn.title = `Còn ${GROUP2_DATA.meta.totalQuestions - count} công thức chưa nối`;
+      } else {
+        submitBtn.title = "Đã hoàn thành! Bấm để nộp bài.";
+      }
+    }
+
+    // 7. KHỞI CHẠY & NỘP BÀI
+    document.addEventListener("DOMContentLoaded", () => {
+      const restored = loadLocal();
+      if (!restored || !state.shuffledCards || Object.keys(state.shuffledCards).length === 0) {
+        initShuffledCards();
+      }
+
+      document.querySelectorAll(".nav-tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.currentSecId = btn.getAttribute("data-sec");
+          state.selectedLeftQId = null;
+          state.selectedRightCardId = null;
+          saveLocal();
+          renderCurrentSection();
+        });
+      });
+
+      document.getElementById("btn-reset-current-sec").addEventListener("click", () => {
+        if (!confirm("Nhóm có chắc muốn xóa toàn bộ các đường nối của phần này?")) return;
+        const curSec = GROUP2_DATA.sections.find(s => s.id === state.currentSecId);
+        if (curSec) {
+          curSec.questions.forEach(q => delete state.mappings[q.id]);
+          saveLocal();
+          renderCurrentSection();
+        }
+      });
+
+      document.getElementById("btn-next-sec").addEventListener("click", () => {
+        const secList = GROUP2_DATA.sections.map(s => s.id);
+        const curIndex = secList.indexOf(state.currentSecId);
+        if (curIndex < secList.length - 1) {
+          state.currentSecId = secList[curIndex + 1];
+          state.selectedLeftQId = null;
+          state.selectedRightCardId = null;
+          saveLocal();
+          renderCurrentSection();
+        }
+      });
+
+      document.getElementById("group-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        state.groupInfo.name = document.getElementById("input-group-name").value.trim();
+        state.groupInfo.className = document.getElementById("input-class-name").value.trim();
+        state.groupInfo.members = document.getElementById("input-members").value.trim();
+        saveLocal();
+
+        document.getElementById("badge-group").textContent = state.groupInfo.name;
+        document.getElementById("badge-class").textContent = state.groupInfo.className;
+
+        document.getElementById("screen-welcome").classList.add("hidden");
+        document.getElementById("screen-exercise").classList.remove("hidden");
+        renderCurrentSection();
+      });
+
+      document.getElementById("btn-submit-work").addEventListener("click", () => {
+        const count = Object.keys(state.mappings).length;
+        if (count < GROUP2_DATA.meta.totalQuestions) {
+          alert(`Nhóm còn ${GROUP2_DATA.meta.totalQuestions - count} công thức chưa nối. Hãy hoàn thành toàn bộ trước khi nộp.`);
+          return;
+        }
+        document.getElementById("modal-confirm").classList.remove("hidden");
+      });
+
+      document.getElementById("btn-cancel-modal").addEventListener("click", () => {
+        document.getElementById("modal-confirm").classList.add("hidden");
+      });
+
+      document.getElementById("btn-confirm-submit").addEventListener("click", () => {
+        const confirmBtn = document.getElementById("btn-confirm-submit");
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Đang gửi dữ liệu...";
+
+        const answersList = [];
+        GROUP2_DATA.sections.forEach(sec => {
+          sec.questions.forEach(q => {
+            const cardId = state.mappings[q.id];
+            const cardObj = findCardById(cardId);
+            answersList.push({
+              section: sec.title,
+              questionId: q.id,
+              leftExpr: q.leftText,
+              selectedCardId: cardId || "",
+              selectedRightExpr: cardObj ? cardObj.val : ""
+            });
+          });
+        });
+
+        const payload = {
+          submissionId: state.submissionId,
+          groupId: "G2",
+          groupName: state.groupInfo.name,
+          className: state.groupInfo.className,
+          members: state.groupInfo.members,
+          questionSet: GROUP2_DATA.meta.questionSet,
+          version: GROUP2_DATA.meta.version,
+          answers: answersList
+        };
+
+        if (typeof google !== "undefined" && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler((res) => {
+              confirmBtn.disabled = false;
+              confirmBtn.textContent = "Xác nhận nộp";
+              document.getElementById("modal-confirm").classList.add("hidden");
+              if (res.success) {
+                showSuccessScreen();
+              } else {
+                alert("Lỗi máy chủ: " + res.error);
+              }
+            })
+            .withFailureHandler((err) => {
+              confirmBtn.disabled = false;
+              confirmBtn.textContent = "Xác nhận nộp";
+              document.getElementById("modal-confirm").classList.add("hidden");
+              alert("Lỗi kết nối khi nộp bài: " + err);
+            })
+            .submitStudentAnswers(payload);
+        } else {
+          setTimeout(() => {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = "Xác nhận nộp";
+            document.getElementById("modal-confirm").classList.add("hidden");
+            showSuccessScreen();
+          }, 600);
+        }
+      });
+
+      function showSuccessScreen() {
+        document.getElementById("screen-exercise").classList.add("hidden");
+        document.getElementById("screen-success").classList.remove("hidden");
+        document.getElementById("label-sub-id").textContent = state.submissionId;
+        document.getElementById("label-group-info").textContent = `${state.groupInfo.name} - ${state.groupInfo.className}`;
+        localStorage.removeItem("MATH11_G2_MATCH_STATE");
+      }
+    });
+  </script>
+</body>
+</html>
